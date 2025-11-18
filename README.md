@@ -179,6 +179,8 @@ Proyecto desarrollado para el curso **Organización de Computadores – Nand2Tet
 * **Samuel Arango**
 * **Samuel Moncada**
 * **Sara Hurtado**
+---
+## Video explicanndo el codigo
 
-```
-```
+https://youtu.be/V0wNCV0b6i8?si=N1zSzHZP1DZinvMu
+
