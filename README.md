@@ -76,7 +76,7 @@ El código está organizado modularmente en múltiples clases:
 
 ## Jugabilidad
 
-* **← / →** : Mover la nave.
+* **W D** : Mover la nave.
 * **Espacio** : Disparar.
 
 ### Objetivo por nivel
