@@ -1,0 +1,32 @@
+class SafeScreen {
+  // Clase auxiliar para dibujar con límites seguros
+  // Evita errores de coordenadas fuera de pantalla
+  
+  function void draw(int x1, int y1, int x2, int y2) {
+    var int X1, Y1, X2, Y2;
+    
+    // Validar que las coordenadas están dentro de límites
+    if (x1 > 511) { return; }
+    if (y1 > 255) { return; }
+    if (x2 < 0) { return; }
+    if (y2 < 0) { return; }
+    
+    // Clamp a límites de pantalla
+    let X1 = x1;
+    let Y1 = y1;
+    let X2 = x2;
+    let Y2 = y2;
+    
+    if (X1 < 0) { let X1 = 0; }
+    if (Y1 < 0) { let Y1 = 0; }
+    if (X2 > 511) { let X2 = 511; }
+    if (Y2 > 255) { let Y2 = 255; }
+    
+    // Verificar que las coordenadas finales sean válidas
+    if (X2 < X1) { return; }
+    if (Y2 < Y1) { return; }
+    
+    do Screen.drawRectangle(X1, Y1, X2, Y2);
+    return;
+  }
+}

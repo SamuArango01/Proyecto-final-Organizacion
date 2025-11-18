@@ -1,0 +1,401 @@
+class Game {
+  field Player player;
+  field EnemyGrid grid;
+  field Boss boss;
+  
+  field Array bullets;
+  field int bulletCount;
+  
+  field Starfield stars;
+
+  field Array enemyShots;
+  field int shotsN;
+
+  field Array powerUps;
+  field int powerCount;
+
+  field int state;
+  field int timer;
+  field boolean speedUp;
+  field int tick;
+  
+  field int shootTimer;  // Para que las balas salgan SIEMPRE
+
+  // ➜ AGREGADO: nivel actual
+  field int level;
+
+  constructor Game new() {
+    var int i;
+
+    let state = 1; 
+    let timer = 60 * 20; 
+    let speedUp = false; 
+    let tick = 0;
+    let shootTimer = 0;
+
+    let level = 1;   // ➜ INICIALIZAR NIVEL
+
+    let player = Player.new(250, 220);
+    
+    let bulletCount = 50;
+    let bullets = Array.new(bulletCount);
+    let i = 0;
+    while (i < bulletCount) {
+      let bullets[i] = Bullet.new();
+      let i = i + 1;
+    }
+
+    // ➜ REEMPLAZADO: aquí antes creabas manualmente al grid y boss
+    do spawnLevel();   // ahora se generan según el nivel
+
+    let stars = Starfield.new(60, 512, 256);
+
+    let shotsN = 8;
+    let enemyShots = Array.new(shotsN);
+    let i = 0;
+    while (i < shotsN) {
+      let enemyShots[i] = EnemyShot.new();
+      let i = i + 1;
+    }
+
+    let powerCount = 3;
+    let powerUps = Array.new(powerCount);
+    let i = 0;
+    while (i < powerCount) {
+      let powerUps[i] = PowerUp.new();
+      let i = i + 1;
+    }
+
+    return this;
+  }
+
+method void spawnLevel() {
+    // Borrar grid y boss actuales
+    let grid = null;
+    let boss = null;
+
+    // ------ NIVELES ------
+    // Nivel 1 → Enemigos normales
+    if (level = 1) {
+        let grid = EnemyGrid.new(8, 4, 30, 30, 60, 30);
+        let boss = Boss.new(200, 20, 24, 16, 10, 0);
+        return;
+    }
+
+    // Nivel 2
+    if (level = 2) {
+        let grid = EnemyGrid.new(10, 5, 20, 20, 50, 26);
+        let boss = Boss.new(180, 20, 28, 16, 13, 0);
+        return;
+    }
+
+    // Nivel 3
+    if (level = 3) {
+        let grid = EnemyGrid.new(12, 5, 10, 20, 40, 24);
+        let boss = Boss.new(170, 18, 30, 16, 15, 1);
+        return;
+    }
+
+    // Nivel 4
+    if (level = 4) {
+        let grid = EnemyGrid.new(14, 6, 10, 18, 36, 22);
+        let boss = Boss.new(150, 16, 34, 18, 18, 1);
+        return;
+    }
+
+    // Nivel 5
+    if (level = 5) {
+        let grid = EnemyGrid.new(0, 0, 0, 0, 0, 0);
+        let boss = Boss.new(120, 20, 60, 28, 40, 1);
+        return;
+    }
+
+    // ←←← OBLIGATORIO: retorno final
+    return;
+}
+
+
+  method void reset() {
+    var int i;
+
+    let player = Player.new(250, 220);
+    let shootTimer = 0;
+    
+    let i = 0;
+    while (i < bulletCount) {
+      let bullets[i] = Bullet.new();
+      let i = i + 1;
+    }
+    
+    // ➜ REEMPLAZADO: ya no se crea grid/boss directo
+    let level = 1;        // reiniciar nivel
+    do spawnLevel();      // cargar nivel 1 nuevamente
+
+    let stars = Starfield.new(60, 512, 256);
+    let state = 1; 
+    let speedUp = false; 
+    let timer = 60 * 20; 
+    let tick = 0;
+
+    let i = 0;
+    while (i < shotsN) {
+      let enemyShots[i] = EnemyShot.new();
+      let i = i + 1;
+    }
+    let i = 0;
+    while (i < powerCount) {
+      let powerUps[i] = PowerUp.new();
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void firePlayerBullet(int x, int y) {
+    var int i;
+    var Bullet b;
+    let i = 0;
+    while (i < bulletCount) {
+      let b = bullets[i];
+      if (~(b = null)) {
+        if (~b.isActive()) {
+          do b.spawn(x, y, 6);
+          return;
+        }
+      }
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void updatePlayerBullets() {
+    var int i;
+    var Bullet b;
+    let i = 0;
+    while (i < bulletCount) {
+      let b = bullets[i];
+      if (~(b = null)) {
+        do b.update();
+        do b.draw();
+      }
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void checkBulletHits() {
+    var int i;
+    var Bullet b;
+    let i = 0;
+    while (i < bulletCount) {
+      let b = bullets[i];
+      if (~(b = null)) {
+        do grid.checkHits(b);
+        do boss.hitBy(b);
+      }
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void spawnEnemyShot(int sx, int sy) {
+    var int i;
+    var EnemyShot s;
+    let i = 0;
+    while (i < shotsN) {
+      let s = enemyShots[i];
+      if (~(s = null)) {
+        if (~s.isActive()) {
+          do s.spawn(sx, sy, 2);
+          return;
+        }
+      }
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void updateEnemyShots() {
+    var int i;
+    var EnemyShot s;
+    var int px, py, pw, ph;
+
+    let px = player.getX(); 
+    let py = player.getY();
+    let pw = player.getW(); 
+    let ph = player.getH();
+
+    let i = 0;
+    while (i < shotsN) {
+      let s = enemyShots[i];
+      if (~(s = null)) {
+        do s.update();
+        do s.draw();
+        if (s.hitsPlayerXYWH(px, py, pw, ph)) {
+          if (player.takeHit()) { 
+            let state = 3; 
+          }
+        }
+      }
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void spawnPowerUpAt(int sx, int sy, int t) {
+    var int i;
+    var PowerUp p;
+
+    if (sx < 1)   { let sx = 1; }
+    if (sx > 510) { let sx = 510; }
+    if (sy < 1)   { let sy = 1; }
+    if (sy > 254) { let sy = 254; }
+
+    let i = 0;
+    while (i < powerCount) {
+      let p = powerUps[i];
+      if (~(p = null)) {
+        if (~p.isActive()) {
+          do p.spawn(sx, sy, t);
+          return;
+        }
+      }
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void updatePowerUps() {
+    var int i;
+    var PowerUp p;
+    var int px, py, pw, ph;
+
+    let px = player.getX(); 
+    let py = player.getY();
+    let pw = player.getW(); 
+    let ph = player.getH();
+
+    let i = 0;
+    while (i < powerCount) {
+      let p = powerUps[i];
+      if (~(p = null)) {
+        do p.update();
+        do p.draw();
+        if (p.collectXYWH(px, py, pw, ph)) {
+          do player.setMode(1);
+        }
+      }
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void maybeSpawnRandomPowerUp() {
+    var int r, sx;
+    let r = tick;
+    while (r > 511) { let r = r - 512; }
+
+    let sx = 20 + r;
+    while (sx > 510) { let sx = sx - 512; }
+    if (sx < 1) { let sx = 1; }
+
+    if ((tick & 127) = 0) {
+      do spawnPowerUpAt(sx, 30, 1);
+    }
+    return;
+  }
+
+  method void drawGameOver() {
+    do Screen.setColor(true);
+    do SafeScreen.draw(80, 90, 430, 150);
+    return;
+  }
+
+  method void run() {
+    var int key, bx, by;
+
+    while (true) {
+      let key = Keyboard.keyPressed();
+      if (key = 113) { return; }
+
+      do Screen.clearScreen();
+      do stars.updateAndDraw();
+
+      if (state = 1) {
+        let tick = tick + 1;
+
+        if (timer > 0) { let timer = timer - 1; }
+        if (timer = 0) { 
+          let speedUp = true; 
+          do stars.setSpeed(2); 
+        }
+
+        do player.update(key);
+        do player.draw();
+
+        // ARREGLO PRINCIPAL: Disparar sin cooldown complicado
+        if (key = 32) {
+          if (shootTimer < 1) {
+            if (player.getMode() = 1) {
+              do firePlayerBullet(player.gunXCenter() - 3, player.gunY());
+              do firePlayerBullet(player.gunXCenter() + 3, player.gunY());
+            } else {
+              do firePlayerBullet(player.gunXCenter(), player.gunY());
+            }
+            let shootTimer = 2;
+          }
+        }
+        
+        if (shootTimer > 0) {
+          let shootTimer = shootTimer - 1;
+        }
+
+        do updatePlayerBullets();
+
+        do grid.update(speedUp);
+        do grid.draw();
+        do checkBulletHits();
+
+        if (boss.isAlive()) {
+          do boss.update();
+          do boss.draw();
+
+          if (boss.consumeShotFlag()) {
+            let bx = boss.getX() + (boss.getW()/2);
+            let by = boss.getY() + boss.getH();
+            do spawnEnemyShot(bx, by);
+          }
+        } else {
+
+          // ➜ CAMBIO: ahora sube de nivel
+          if (grid.countAlive() = 0) { 
+            let level = level + 1;
+
+            if (level > 5) {
+              let state = 2;   // juego ganado
+            } else {
+              do spawnLevel(); // cargar siguiente nivel
+            }
+          }
+        }
+
+        do updateEnemyShots();
+        do maybeSpawnRandomPowerUp();
+        do updatePowerUps();
+      }
+      else {
+        if (state = 2) {
+          do Screen.setColor(true);
+          do SafeScreen.draw(60, 90, 450, 150);
+          if (key = 114) { do reset(); }
+        }
+        if (state = 3) {
+          do drawGameOver();
+          if (key = 114) { do reset(); }
+        }
+      }
+
+      do Sys.wait(10);
+    }
+    return;
+  }
+}

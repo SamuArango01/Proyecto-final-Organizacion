@@ -1,0 +1,117 @@
+function SafeScreen.draw 4
+    push argument 0
+    push constant 511
+    gt
+    not
+    if-goto SafeScreen_1
+    push constant 0
+    return
+    goto SafeScreen_0
+label SafeScreen_1
+label SafeScreen_0
+    push argument 1
+    push constant 255
+    gt
+    not
+    if-goto SafeScreen_3
+    push constant 0
+    return
+    goto SafeScreen_2
+label SafeScreen_3
+label SafeScreen_2
+    push argument 2
+    push constant 0
+    lt
+    not
+    if-goto SafeScreen_5
+    push constant 0
+    return
+    goto SafeScreen_4
+label SafeScreen_5
+label SafeScreen_4
+    push argument 3
+    push constant 0
+    lt
+    not
+    if-goto SafeScreen_7
+    push constant 0
+    return
+    goto SafeScreen_6
+label SafeScreen_7
+label SafeScreen_6
+    push argument 0
+    pop local 0
+    push argument 1
+    pop local 1
+    push argument 2
+    pop local 2
+    push argument 3
+    pop local 3
+    push local 0
+    push constant 0
+    lt
+    not
+    if-goto SafeScreen_9
+    push constant 0
+    pop local 0
+    goto SafeScreen_8
+label SafeScreen_9
+label SafeScreen_8
+    push local 1
+    push constant 0
+    lt
+    not
+    if-goto SafeScreen_11
+    push constant 0
+    pop local 1
+    goto SafeScreen_10
+label SafeScreen_11
+label SafeScreen_10
+    push local 2
+    push constant 511
+    gt
+    not
+    if-goto SafeScreen_13
+    push constant 511
+    pop local 2
+    goto SafeScreen_12
+label SafeScreen_13
+label SafeScreen_12
+    push local 3
+    push constant 255
+    gt
+    not
+    if-goto SafeScreen_15
+    push constant 255
+    pop local 3
+    goto SafeScreen_14
+label SafeScreen_15
+label SafeScreen_14
+    push local 2
+    push local 0
+    lt
+    not
+    if-goto SafeScreen_17
+    push constant 0
+    return
+    goto SafeScreen_16
+label SafeScreen_17
+label SafeScreen_16
+    push local 3
+    push local 1
+    lt
+    not
+    if-goto SafeScreen_19
+    push constant 0
+    return
+    goto SafeScreen_18
+label SafeScreen_19
+label SafeScreen_18
+    push local 0
+    push local 1
+    push local 2
+    push local 3
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 0
+    return

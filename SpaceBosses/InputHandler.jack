@@ -1,0 +1,42 @@
+class InputHandler {
+  // Clase para manejar input más fluido
+  
+  field boolean leftPressed;
+  field boolean rightPressed;
+  field boolean spacePressed;
+  field boolean quitPressed;
+  field boolean restartPressed;
+  
+  constructor InputHandler new() {
+    let leftPressed = false;
+    let rightPressed = false;
+    let spacePressed = false;
+    let quitPressed = false;
+    let restartPressed = false;
+    return this;
+  }
+  
+  method void update() {
+    var int key;
+    let key = Keyboard.keyPressed();
+    
+    let leftPressed = (key = 97);    // 'a'
+    let rightPressed = (key = 100);  // 'd'
+    let spacePressed = (key = 32);   // space
+    let quitPressed = (key = 113);   // 'q'
+    let restartPressed = (key = 114); // 'r'
+    
+    return;
+  }
+  
+  method boolean isLeftPressed() { return leftPressed; }
+  method boolean isRightPressed() { return rightPressed; }
+  method boolean isSpacePressed() { return spacePressed; }
+  method boolean isQuitPressed() { return quitPressed; }
+  method boolean isRestartPressed() { return restartPressed; }
+  
+  method void dispose() {
+    do Memory.deAlloc(this);
+    return;
+  }
+}

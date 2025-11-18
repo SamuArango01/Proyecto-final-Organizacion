@@ -1,0 +1,32 @@
+class Enemy {
+  field Rect r;
+  field boolean alive;
+
+  constructor Enemy new(int ax, int ay, int w, int h) {
+    let r = Rect.new(ax, ay, w, h);
+    let alive = true;
+    return this;
+  }
+
+  method void move(int dx, int dy) { do r.moveBy(dx, dy); return; }
+
+  method void draw() {
+    if (~alive) { return; }
+    do r.draw(true);
+    return;
+  }
+
+  method boolean hitBy(Bullet b) {
+    if (~alive) { return false; }
+    if (b.collides(r)) {
+      let alive = false;
+      do b.deactivate();
+      return true;
+    }
+    return false;
+  }
+
+  method boolean isAlive() { return alive; }
+  method Rect bounds() { return r; }
+
+}

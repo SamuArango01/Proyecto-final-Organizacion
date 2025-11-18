@@ -1,0 +1,78 @@
+class Player {
+  field int x, y, w, h, speed;
+  field int mode;     // 0 normal, 1 doble
+  field int lives;
+  field int invul;
+
+  constructor Player new(int startX, int startY) {
+    let x = startX; let y = startY; let w = 12; let h = 6;
+    let speed = 6;  // Velocidad MÁS rápida para mayor fluidez
+    let mode = 0; let lives = 3; let invul = 0;
+    return this;
+  }
+
+  method void setMode(int m) { let mode = m; return; }
+  method int  getMode() { return mode; }
+
+  method void update(int key) {
+    // Movimiento más rápido y fluido
+    if (key = 97) {  // 'a' - izquierda
+      let x = x - speed;
+      if (x < 2) { let x = 2; }
+    }
+    if (key = 100) {  // 'd' - derecha
+      let x = x + speed;
+      if (x > 510 - w) { let x = 510 - w; }
+    }
+    if (invul > 0) { let invul = invul - 1; }
+    return;
+  }
+
+  method void updateWithInput(boolean left, boolean right) {
+    // Versión alternativa para input más fluido
+    if (left) {
+      let x = x - speed;
+      if (x < 2) { let x = 2; }
+    }
+    if (right) {
+      let x = x + speed;
+      if (x > 510 - w) { let x = 510 - w; }
+    }
+    if (invul > 0) { let invul = invul - 1; }
+    return;
+  }
+
+  method void draw() {
+    var int i, sx;
+    do Screen.setColor(true);
+    do Screen.drawRectangle(x, y, x + w - 1, y + h - 1);
+    do Screen.drawRectangle(x + (w/2) - 1, y - 2, x + (w/2), y);
+    
+    // Dibujar vidas
+    let i = 0;
+    while (i < lives) {
+      let sx = 6 + (i * 10);
+      do SafeScreen.draw(sx, 6, sx + 6, 10);
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method boolean canFire() { return true; }  // Sin cooldown
+  method void onFired() { return; }  // Sin cooldown
+
+  method boolean takeHit() {
+    if (invul > 0) { return false; }
+    let lives = lives - 1;
+    let invul = 30;
+    return lives < 1;
+  }
+
+  method int getX() { return x; }
+  method int getY() { return y; }
+  method int getW() { return w; }
+  method int getH() { return h; }
+
+  method int gunXCenter() { return x + (w/2); }
+  method int gunY() { return y - 3; }
+}

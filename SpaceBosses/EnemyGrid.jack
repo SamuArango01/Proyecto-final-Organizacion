@@ -1,0 +1,145 @@
+class EnemyGrid {
+  field Array enemies;   // Enemy*
+  field int cols, rows;
+  field int stepX, stepY;
+  field int tick;
+  field int aliveCount;
+  field int direction;   // 1 = derecha, -1 = izquierda
+
+  constructor EnemyGrid new(int c, int r, int startX, int startY, int gapX, int gapY) {
+    var int i, j, idx, x, y;
+    let cols = c; let rows = r;
+    let enemies = Array.new(c*r);
+    let stepX = 2; let stepY = 1; let tick = 0;  // Movimiento más fluido horizontal
+    let aliveCount = c * r;
+    let direction = 1;
+
+    let j = 0;
+    while (j < r) {
+      let i = 0;
+      while (i < c) {
+        let idx = j*c + i;
+        let x = startX + (i * gapX);
+        let y = startY + (j * gapY);
+        let enemies[idx] = Enemy.new(x, y, 16, 10);
+        let i = i + 1;
+      }
+      let j = j + 1;
+    }
+    return this;
+  }
+
+  method void update(boolean speedUp) {
+    var int i, total, dx;
+    var Enemy e;
+    var Rect bounds;
+    var int leftMost, rightMost, bx, bw;
+    var boolean hitEdge;
+
+    let total = cols * rows;
+
+    // Velocidad horizontal más rápida pero bajada MÁS LENTA
+    if (speedUp) { let stepX = 2; }
+    else         { let stepX = 1; }
+
+    let dx = stepX * direction;
+
+    // Encontrar extremos del grupo vivo
+    let hitEdge = false;
+    let leftMost = 512;
+    let rightMost = 0;
+
+    let i = 0;
+    while (i < total) {
+      let e = enemies[i];
+      if (~(e = null)) {
+        if (e.isAlive()) {
+          let bounds = e.bounds();
+          let bx = bounds.getX();
+          let bw = bounds.getW();
+
+          if (bx < leftMost) { let leftMost = bx; }
+          if ((bx + bw) > rightMost) { let rightMost = bx + bw; }
+        }
+      }
+      let i = i + 1;
+    }
+
+    // Verificar bordes
+    if (direction = 1) {
+      if ((rightMost + dx) > 508) { let hitEdge = true; }
+    } else {
+      if ((leftMost + dx) < 4) { let hitEdge = true; }
+    }
+
+    // Cambiar dirección y bajar si toca borde
+    if (hitEdge) {
+      let direction = 0 - direction;
+      let i = 0;
+      while (i < total) {
+        let e = enemies[i];
+        if (~(e = null)) { do e.move(0, stepY); }  // Bajan solo 1 pixel
+        let i = i + 1;
+      }
+    } else {
+      // Movimiento horizontal normal
+      let i = 0;
+      while (i < total) {
+        let e = enemies[i];
+        if (~(e = null)) { do e.move(dx, 0); }
+        let i = i + 1;
+      }
+    }
+
+    // Bajada adicional periódica cada 256 frames (MUY lento)
+    let tick = tick + 1;
+    if ((tick & 255) = 0) {
+      let i = 0;
+      while (i < total) {
+        let e = enemies[i];
+        if (~(e = null)) { do e.move(0, 1); }  // Solo 1 pixel
+        let i = i + 1;
+      }
+    }
+
+    return;
+  }
+
+  method void draw() {
+    var int i, total;
+    var Enemy e;
+
+    let total = cols * rows;
+    let i = 0;
+    while (i < total) {
+      let e = enemies[i];
+      if (~(e = null)) { do e.draw(); }
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method boolean checkHits(Bullet b) {
+    var int i, total;
+    var boolean any;
+    var Enemy e;
+
+    let total = cols * rows;
+    let any = false;
+
+    let i = 0;
+    while (i < total) {
+      let e = enemies[i];
+      if (~(e = null)) {
+        if (e.hitBy(b)) {
+          let any = true;
+          let aliveCount = aliveCount - 1;
+        }
+      }
+      let i = i + 1;
+    }
+    return any;
+  }
+
+  method int countAlive() { return aliveCount; }
+}

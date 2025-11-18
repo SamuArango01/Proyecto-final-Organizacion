@@ -1,0 +1,218 @@
+function Starfield.new 3
+    push constant 6
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    pop this 2
+    push argument 1
+    pop this 4
+    push argument 2
+    pop this 5
+    push constant 1
+    pop this 3
+    push this 2
+    call Array.new 1
+    pop this 0
+    push this 2
+    call Array.new 1
+    pop this 1
+    push constant 0
+    pop local 0
+label Starfield_0
+    push local 0
+    push this 2
+    lt
+    not
+    if-goto Starfield_1
+    push local 0
+    push constant 37
+    call Math.multiply 2
+    push constant 511
+    and
+    pop local 1
+    push local 0
+    push constant 73
+    call Math.multiply 2
+    push constant 255
+    and
+    pop local 2
+    push local 1
+    push this 4
+    gt
+    not
+    if-goto Starfield_3
+    push local 1
+    push this 4
+    sub
+    pop local 1
+    goto Starfield_2
+label Starfield_3
+label Starfield_2
+    push local 2
+    push this 5
+    gt
+    not
+    if-goto Starfield_5
+    push local 2
+    push this 5
+    sub
+    pop local 2
+    goto Starfield_4
+label Starfield_5
+label Starfield_4
+    push local 0
+    push this 0
+    add
+    push local 1
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push this 1
+    add
+    push local 2
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Starfield_0
+label Starfield_1
+    push pointer 0
+    return
+function Starfield.setSpeed 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    pop this 3
+    push constant 0
+    return
+function Starfield.updateAndDraw 3
+    push argument 0
+    pop pointer 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push constant 0
+    pop local 0
+label Starfield_6
+    push local 0
+    push this 2
+    lt
+    not
+    if-goto Starfield_7
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    pop local 2
+    push local 2
+    push this 3
+    add
+    pop local 2
+    push local 2
+    push this 5
+    gt
+    not
+    if-goto Starfield_9
+    push constant 0
+    pop local 2
+    push local 0
+    push constant 17
+    call Math.multiply 2
+    push local 2
+    add
+    push constant 511
+    and
+    pop local 1
+    push local 1
+    push this 4
+    gt
+    not
+    if-goto Starfield_11
+    push local 1
+    push this 4
+    sub
+    pop local 1
+    goto Starfield_10
+label Starfield_11
+label Starfield_10
+    goto Starfield_8
+label Starfield_9
+label Starfield_8
+    push local 0
+    push this 0
+    add
+    push local 1
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push this 1
+    add
+    push local 2
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 1
+    push constant 0
+    gt
+    push local 1
+    push constant 512
+    lt
+    and
+    push local 2
+    push constant 0
+    gt
+    and
+    push local 2
+    push constant 256
+    lt
+    and
+    not
+    if-goto Starfield_13
+    push local 1
+    push local 2
+    push local 1
+    push local 2
+    call SafeScreen.draw 4
+    pop temp 0
+    goto Starfield_12
+label Starfield_13
+label Starfield_12
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Starfield_6
+label Starfield_7
+    push constant 0
+    return
+function Starfield.dispose 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    call Array.dispose 1
+    pop temp 0
+    push this 1
+    call Array.dispose 1
+    pop temp 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return

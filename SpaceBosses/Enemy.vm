@@ -1,0 +1,84 @@
+function Enemy.new 0
+    push constant 2
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    push argument 1
+    push argument 2
+    push argument 3
+    call Rect.new 4
+    pop this 0
+    push constant 1
+    neg
+    pop this 1
+    push pointer 0
+    return
+function Enemy.move 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    push argument 1
+    push argument 2
+    call Rect.moveBy 3
+    pop temp 0
+    push constant 0
+    return
+function Enemy.draw 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    not
+    not
+    if-goto Enemy_1
+    push constant 0
+    return
+    goto Enemy_0
+label Enemy_1
+label Enemy_0
+    push this 0
+    push constant 1
+    neg
+    call Rect.draw 2
+    pop temp 0
+    push constant 0
+    return
+function Enemy.hitBy 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    not
+    not
+    if-goto Enemy_3
+    push constant 0
+    return
+    goto Enemy_2
+label Enemy_3
+label Enemy_2
+    push argument 1
+    push this 0
+    call Bullet.collides 2
+    not
+    if-goto Enemy_5
+    push constant 0
+    pop this 1
+    push argument 1
+    call Bullet.deactivate 1
+    pop temp 0
+    push constant 1
+    neg
+    return
+    goto Enemy_4
+label Enemy_5
+label Enemy_4
+    push constant 0
+    return
+function Enemy.isAlive 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    return
+function Enemy.bounds 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    return

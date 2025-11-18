@@ -1,0 +1,384 @@
+function Boss.new 0
+    push constant 7
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    push argument 1
+    push argument 2
+    push argument 3
+    call Rect.new 4
+    pop this 0
+    push argument 4
+    pop this 1
+    push constant 0
+    pop this 2
+    push argument 5
+    pop this 3
+    push constant 1
+    neg
+    pop this 4
+    push constant 0
+    pop this 5
+    push constant 1
+    pop this 6
+    push pointer 0
+    return
+function Boss.update 3
+    push argument 0
+    pop pointer 0
+    push this 4
+    not
+    not
+    if-goto Boss_1
+    push constant 0
+    return
+    goto Boss_0
+label Boss_1
+label Boss_0
+    push this 2
+    push constant 1
+    add
+    pop this 2
+    push this 0
+    call Rect.getX 1
+    pop local 0
+    push this 0
+    call Rect.getW 1
+    pop local 1
+    push this 3
+    push constant 0
+    eq
+    not
+    if-goto Boss_3
+    push local 0
+    push constant 2
+    push this 6
+    call Math.multiply 2
+    add
+    pop local 2
+    push this 6
+    push constant 1
+    eq
+    not
+    if-goto Boss_5
+    push local 2
+    push local 1
+    add
+    push constant 490
+    gt
+    not
+    if-goto Boss_7
+    push constant 1
+    neg
+    pop this 6
+    push this 0
+    push constant 0
+    push constant 1
+    call Rect.moveBy 3
+    pop temp 0
+    push constant 0
+    return
+    goto Boss_6
+label Boss_7
+label Boss_6
+    goto Boss_4
+label Boss_5
+    push local 2
+    push constant 20
+    lt
+    not
+    if-goto Boss_9
+    push constant 1
+    pop this 6
+    push this 0
+    push constant 0
+    push constant 1
+    call Rect.moveBy 3
+    pop temp 0
+    push constant 0
+    return
+    goto Boss_8
+label Boss_9
+label Boss_8
+label Boss_4
+    push this 0
+    push constant 2
+    push this 6
+    call Math.multiply 2
+    push constant 0
+    call Rect.moveBy 3
+    pop temp 0
+    push this 2
+    push constant 127
+    and
+    push constant 0
+    eq
+    not
+    if-goto Boss_11
+    push this 0
+    push constant 0
+    push constant 1
+    call Rect.moveBy 3
+    pop temp 0
+    goto Boss_10
+label Boss_11
+label Boss_10
+    goto Boss_2
+label Boss_3
+    push local 0
+    push constant 3
+    push this 6
+    call Math.multiply 2
+    add
+    pop local 2
+    push this 6
+    push constant 1
+    eq
+    not
+    if-goto Boss_13
+    push local 2
+    push local 1
+    add
+    push constant 490
+    gt
+    not
+    if-goto Boss_15
+    push constant 1
+    neg
+    pop this 6
+    push this 0
+    push constant 0
+    push constant 1
+    call Rect.moveBy 3
+    pop temp 0
+    push constant 0
+    return
+    goto Boss_14
+label Boss_15
+label Boss_14
+    goto Boss_12
+label Boss_13
+    push local 2
+    push constant 20
+    lt
+    not
+    if-goto Boss_17
+    push constant 1
+    pop this 6
+    push this 0
+    push constant 0
+    push constant 1
+    call Rect.moveBy 3
+    pop temp 0
+    push constant 0
+    return
+    goto Boss_16
+label Boss_17
+label Boss_16
+label Boss_12
+    push this 0
+    push constant 3
+    push this 6
+    call Math.multiply 2
+    push constant 0
+    call Rect.moveBy 3
+    pop temp 0
+    push this 2
+    push constant 63
+    and
+    push constant 0
+    eq
+    not
+    if-goto Boss_19
+    push this 0
+    push constant 0
+    push constant 1
+    call Rect.moveBy 3
+    pop temp 0
+    goto Boss_18
+label Boss_19
+label Boss_18
+label Boss_2
+    push this 2
+    push constant 19
+    and
+    push constant 0
+    eq
+    not
+    if-goto Boss_21
+    push constant 1
+    neg
+    pop this 5
+    goto Boss_20
+label Boss_21
+    push constant 0
+    pop this 5
+label Boss_20
+    push constant 0
+    return
+function Boss.draw 5
+    push argument 0
+    pop pointer 0
+    push this 4
+    not
+    not
+    if-goto Boss_23
+    push constant 0
+    return
+    goto Boss_22
+label Boss_23
+label Boss_22
+    push this 0
+    push constant 1
+    neg
+    call Rect.draw 2
+    pop temp 0
+    push this 0
+    call Rect.getX 1
+    pop local 0
+    push this 0
+    call Rect.getY 1
+    pop local 1
+    push local 1
+    push constant 6
+    sub
+    pop local 2
+    push local 1
+    push constant 4
+    sub
+    pop local 3
+    push local 2
+    push constant 0
+    lt
+    not
+    if-goto Boss_25
+    push constant 0
+    pop local 2
+    goto Boss_24
+label Boss_25
+label Boss_24
+    push local 3
+    push constant 0
+    lt
+    not
+    if-goto Boss_27
+    push constant 0
+    pop local 3
+    goto Boss_26
+label Boss_27
+label Boss_26
+    push local 0
+    push this 1
+    push constant 4
+    call Math.multiply 2
+    add
+    pop local 4
+    push local 4
+    push constant 511
+    gt
+    not
+    if-goto Boss_29
+    push constant 511
+    pop local 4
+    goto Boss_28
+label Boss_29
+label Boss_28
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push local 0
+    push local 2
+    push local 4
+    push local 3
+    call SafeScreen.draw 4
+    pop temp 0
+    push constant 0
+    return
+function Boss.hitBy 0
+    push argument 0
+    pop pointer 0
+    push this 4
+    not
+    not
+    if-goto Boss_31
+    push constant 0
+    return
+    goto Boss_30
+label Boss_31
+label Boss_30
+    push argument 1
+    push this 0
+    call Bullet.collides 2
+    not
+    if-goto Boss_33
+    push argument 1
+    call Bullet.deactivate 1
+    pop temp 0
+    push this 1
+    push constant 1
+    sub
+    pop this 1
+    push this 1
+    push constant 1
+    lt
+    not
+    if-goto Boss_35
+    push constant 0
+    pop this 4
+    goto Boss_34
+label Boss_35
+label Boss_34
+    push constant 1
+    neg
+    return
+    goto Boss_32
+label Boss_33
+label Boss_32
+    push constant 0
+    return
+function Boss.isAlive 0
+    push argument 0
+    pop pointer 0
+    push this 4
+    return
+function Boss.consumeShotFlag 0
+    push argument 0
+    pop pointer 0
+    push this 5
+    not
+    if-goto Boss_37
+    push constant 0
+    pop this 5
+    push constant 1
+    neg
+    return
+    goto Boss_36
+label Boss_37
+label Boss_36
+    push constant 0
+    return
+function Boss.getX 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    call Rect.getX 1
+    return
+function Boss.getY 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    call Rect.getY 1
+    return
+function Boss.getW 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    call Rect.getW 1
+    return
+function Boss.getH 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    call Rect.getH 1
+    return

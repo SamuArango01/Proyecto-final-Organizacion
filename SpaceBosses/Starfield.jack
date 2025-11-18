@@ -1,0 +1,80 @@
+class Starfield {
+  field Array starsX;
+  field Array starsY;
+  field int count;
+  field int speed;
+  field int maxX, maxY;
+
+  constructor Starfield new(int n, int mx, int my) {
+    var int i, x, y;
+    let count = n;
+    let maxX = mx;
+    let maxY = my;
+    let speed = 1;
+
+    let starsX = Array.new(count);
+    let starsY = Array.new(count);
+
+    let i = 0;
+    while (i < count) {
+      // Posición aleatoria inicial basada en i
+      let x = (i * 37) & 511;  // 0-511
+      let y = (i * 73) & 255;  // 0-255
+      
+      if (x > maxX) { let x = x - maxX; }
+      if (y > maxY) { let y = y - maxY; }
+      
+      let starsX[i] = x;
+      let starsY[i] = y;
+      let i = i + 1;
+    }
+    return this;
+  }
+
+  method void setSpeed(int s) {
+    let speed = s;
+    return;
+  }
+
+  method void updateAndDraw() {
+    var int i, x, y;
+    
+    do Screen.setColor(true);
+    
+    let i = 0;
+    while (i < count) {
+      let x = starsX[i];
+      let y = starsY[i];
+      
+      // Mover estrella hacia abajo
+      let y = y + speed;
+      
+      // Si sale de la pantalla, reiniciar arriba
+      if (y > maxY) {
+        let y = 0;
+        // Nueva posición X aleatoria
+        let x = ((i * 17) + y) & 511;
+        if (x > maxX) { let x = x - maxX; }
+      }
+      
+      // Guardar nueva posición
+      let starsX[i] = x;
+      let starsY[i] = y;
+      
+      // Dibujar estrella (1 pixel)
+      if ((x > 0) & (x < 512) & (y > 0) & (y < 256)) {
+        do SafeScreen.draw(x, y, x, y);
+      }
+      
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void dispose() {
+    do starsX.dispose();
+    do starsY.dispose();
+    do Memory.deAlloc(this);
+    return;
+  }
+}

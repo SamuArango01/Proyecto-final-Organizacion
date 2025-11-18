@@ -1,0 +1,444 @@
+function EnemyGrid.new 5
+    push constant 8
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    pop this 1
+    push argument 1
+    pop this 2
+    push argument 0
+    push argument 1
+    call Math.multiply 2
+    call Array.new 1
+    pop this 0
+    push constant 2
+    pop this 3
+    push constant 1
+    pop this 4
+    push constant 0
+    pop this 5
+    push argument 0
+    push argument 1
+    call Math.multiply 2
+    pop this 6
+    push constant 1
+    pop this 7
+    push constant 0
+    pop local 1
+label EnemyGrid_0
+    push local 1
+    push argument 1
+    lt
+    not
+    if-goto EnemyGrid_1
+    push constant 0
+    pop local 0
+label EnemyGrid_2
+    push local 0
+    push argument 0
+    lt
+    not
+    if-goto EnemyGrid_3
+    push local 1
+    push argument 0
+    call Math.multiply 2
+    push local 0
+    add
+    pop local 2
+    push argument 2
+    push local 0
+    push argument 4
+    call Math.multiply 2
+    add
+    pop local 3
+    push argument 3
+    push local 1
+    push argument 5
+    call Math.multiply 2
+    add
+    pop local 4
+    push local 2
+    push this 0
+    add
+    push local 3
+    push local 4
+    push constant 16
+    push constant 10
+    call Enemy.new 4
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto EnemyGrid_2
+label EnemyGrid_3
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto EnemyGrid_0
+label EnemyGrid_1
+    push pointer 0
+    return
+function EnemyGrid.update 10
+    push argument 0
+    pop pointer 0
+    push this 1
+    push this 2
+    call Math.multiply 2
+    pop local 1
+    push argument 1
+    not
+    if-goto EnemyGrid_5
+    push constant 2
+    pop this 3
+    goto EnemyGrid_4
+label EnemyGrid_5
+    push constant 1
+    pop this 3
+label EnemyGrid_4
+    push this 3
+    push this 7
+    call Math.multiply 2
+    pop local 2
+    push constant 0
+    pop local 9
+    push constant 512
+    pop local 5
+    push constant 0
+    pop local 6
+    push constant 0
+    pop local 0
+label EnemyGrid_6
+    push local 0
+    push local 1
+    lt
+    not
+    if-goto EnemyGrid_7
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop local 3
+    push local 3
+    push constant 0
+    eq
+    not
+    not
+    if-goto EnemyGrid_9
+    push local 3
+    call Enemy.isAlive 1
+    not
+    if-goto EnemyGrid_11
+    push local 3
+    call Enemy.bounds 1
+    pop local 4
+    push local 4
+    call Rect.getX 1
+    pop local 7
+    push local 4
+    call Rect.getW 1
+    pop local 8
+    push local 7
+    push local 5
+    lt
+    not
+    if-goto EnemyGrid_13
+    push local 7
+    pop local 5
+    goto EnemyGrid_12
+label EnemyGrid_13
+label EnemyGrid_12
+    push local 7
+    push local 8
+    add
+    push local 6
+    gt
+    not
+    if-goto EnemyGrid_15
+    push local 7
+    push local 8
+    add
+    pop local 6
+    goto EnemyGrid_14
+label EnemyGrid_15
+label EnemyGrid_14
+    goto EnemyGrid_10
+label EnemyGrid_11
+label EnemyGrid_10
+    goto EnemyGrid_8
+label EnemyGrid_9
+label EnemyGrid_8
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto EnemyGrid_6
+label EnemyGrid_7
+    push this 7
+    push constant 1
+    eq
+    not
+    if-goto EnemyGrid_17
+    push local 6
+    push local 2
+    add
+    push constant 508
+    gt
+    not
+    if-goto EnemyGrid_19
+    push constant 1
+    neg
+    pop local 9
+    goto EnemyGrid_18
+label EnemyGrid_19
+label EnemyGrid_18
+    goto EnemyGrid_16
+label EnemyGrid_17
+    push local 5
+    push local 2
+    add
+    push constant 4
+    lt
+    not
+    if-goto EnemyGrid_21
+    push constant 1
+    neg
+    pop local 9
+    goto EnemyGrid_20
+label EnemyGrid_21
+label EnemyGrid_20
+label EnemyGrid_16
+    push local 9
+    not
+    if-goto EnemyGrid_23
+    push constant 0
+    push this 7
+    sub
+    pop this 7
+    push constant 0
+    pop local 0
+label EnemyGrid_24
+    push local 0
+    push local 1
+    lt
+    not
+    if-goto EnemyGrid_25
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop local 3
+    push local 3
+    push constant 0
+    eq
+    not
+    not
+    if-goto EnemyGrid_27
+    push local 3
+    push constant 0
+    push this 4
+    call Enemy.move 3
+    pop temp 0
+    goto EnemyGrid_26
+label EnemyGrid_27
+label EnemyGrid_26
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto EnemyGrid_24
+label EnemyGrid_25
+    goto EnemyGrid_22
+label EnemyGrid_23
+    push constant 0
+    pop local 0
+label EnemyGrid_28
+    push local 0
+    push local 1
+    lt
+    not
+    if-goto EnemyGrid_29
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop local 3
+    push local 3
+    push constant 0
+    eq
+    not
+    not
+    if-goto EnemyGrid_31
+    push local 3
+    push local 2
+    push constant 0
+    call Enemy.move 3
+    pop temp 0
+    goto EnemyGrid_30
+label EnemyGrid_31
+label EnemyGrid_30
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto EnemyGrid_28
+label EnemyGrid_29
+label EnemyGrid_22
+    push this 5
+    push constant 1
+    add
+    pop this 5
+    push this 5
+    push constant 255
+    and
+    push constant 0
+    eq
+    not
+    if-goto EnemyGrid_33
+    push constant 0
+    pop local 0
+label EnemyGrid_34
+    push local 0
+    push local 1
+    lt
+    not
+    if-goto EnemyGrid_35
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop local 3
+    push local 3
+    push constant 0
+    eq
+    not
+    not
+    if-goto EnemyGrid_37
+    push local 3
+    push constant 0
+    push constant 1
+    call Enemy.move 3
+    pop temp 0
+    goto EnemyGrid_36
+label EnemyGrid_37
+label EnemyGrid_36
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto EnemyGrid_34
+label EnemyGrid_35
+    goto EnemyGrid_32
+label EnemyGrid_33
+label EnemyGrid_32
+    push constant 0
+    return
+function EnemyGrid.draw 3
+    push argument 0
+    pop pointer 0
+    push this 1
+    push this 2
+    call Math.multiply 2
+    pop local 1
+    push constant 0
+    pop local 0
+label EnemyGrid_38
+    push local 0
+    push local 1
+    lt
+    not
+    if-goto EnemyGrid_39
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop local 2
+    push local 2
+    push constant 0
+    eq
+    not
+    not
+    if-goto EnemyGrid_41
+    push local 2
+    call Enemy.draw 1
+    pop temp 0
+    goto EnemyGrid_40
+label EnemyGrid_41
+label EnemyGrid_40
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto EnemyGrid_38
+label EnemyGrid_39
+    push constant 0
+    return
+function EnemyGrid.checkHits 4
+    push argument 0
+    pop pointer 0
+    push this 1
+    push this 2
+    call Math.multiply 2
+    pop local 1
+    push constant 0
+    pop local 2
+    push constant 0
+    pop local 0
+label EnemyGrid_42
+    push local 0
+    push local 1
+    lt
+    not
+    if-goto EnemyGrid_43
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop local 3
+    push local 3
+    push constant 0
+    eq
+    not
+    not
+    if-goto EnemyGrid_45
+    push local 3
+    push argument 1
+    call Enemy.hitBy 2
+    not
+    if-goto EnemyGrid_47
+    push constant 1
+    neg
+    pop local 2
+    push this 6
+    push constant 1
+    sub
+    pop this 6
+    goto EnemyGrid_46
+label EnemyGrid_47
+label EnemyGrid_46
+    goto EnemyGrid_44
+label EnemyGrid_45
+label EnemyGrid_44
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto EnemyGrid_42
+label EnemyGrid_43
+    push local 2
+    return
+function EnemyGrid.countAlive 0
+    push argument 0
+    pop pointer 0
+    push this 6
+    return

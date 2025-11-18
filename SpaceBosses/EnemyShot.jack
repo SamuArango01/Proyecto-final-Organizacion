@@ -1,0 +1,44 @@
+class EnemyShot {
+  field int x, y, vy;
+  field boolean active;
+
+  constructor EnemyShot new() { let active = false; return this; }
+
+  method void spawn(int sx, int sy, int speedDown) {
+    let x = sx; let y = sy; let vy = speedDown; let active = true; return;
+  }
+
+  method void update() {
+    if (~active) { return; }
+    let y = y + vy;
+    if (y > 255) { let active = false; }
+    return;
+  }
+
+  method void draw() {
+    if (~active) { return; }
+    do Screen.setColor(true);
+    do SafeScreen.draw(x, y, x, y + 3);
+    return;
+  }
+
+  method boolean hitsPlayerXYWH(int px, int py, int pw, int ph) {
+    var int x2, y2, px2, py2;
+    if (~active) { return false; }
+
+    let x2  = x;
+    let y2  = y + 3;
+    let px2 = px + pw - 1;
+    let py2 = py + ph - 1;
+
+    if ((x2 < px) & (x < px)) { return false; }
+    if ((px2 < x) & (px < x)) { return false; }
+    if ((y2 < py) & (y < py)) { return false; }
+    if ((py2 < y) & (py < y)) { return false; }
+
+    let active = false;
+    return true;
+  }
+
+  method boolean isActive() { return active; }
+}

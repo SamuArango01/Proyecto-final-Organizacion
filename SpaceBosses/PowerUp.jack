@@ -1,0 +1,49 @@
+class PowerUp {
+  field int x, y, vy, type; // 1 = doble bala
+  field boolean active;
+
+  constructor PowerUp new() { let active = false; return this; }
+
+  method void spawn(int sx, int sy, int t) {
+    let x = sx; let y = sy; let vy = 1; let type = t; let active = true; return;
+  }
+
+  method void update() {
+    if (~active) { return; }
+    let y = y + vy;
+    if (y > 254) { let active = false; }
+    return;
+  }
+
+  method void draw() {
+    var int x1, y1, x2, y2;
+    if (~active) { return; }
+
+    let x1 = x - 1; let y1 = y - 1;
+    let x2 = x + 1; let y2 = y + 1;
+    do SafeScreen.draw(x1, y1, x2, y2);
+    return;
+  }
+
+
+  method boolean collectXYWH(int px, int py, int pw, int ph) {
+    var int x1, y1, x2, y2, px2, py2;
+    if (~active) { return false; }
+
+    let x1 = x - 1; let y1 = y - 1;
+    let x2 = x + 1; let y2 = y + 1;
+    let px2 = px + pw - 1;
+    let py2 = py + ph - 1;
+
+    if ((x2 < px) & (x1 < px)) { return false; }
+    if ((px2 < x1) & (px < x1)) { return false; }
+    if ((y2 < py) & (y1 < py)) { return false; }
+    if ((py2 < y1) & (py < y1)) { return false; }
+
+    let active = false;
+    return true;
+  }
+
+  method int getType() { return type; }
+  method boolean isActive() { return active; }
+}

@@ -1,0 +1,58 @@
+class Rect {
+  field int x, y, w, h;
+
+  constructor Rect new(int ax, int ay, int aw, int ah) {
+    let x = ax; let y = ay; let w = aw; let h = ah;
+    return this;
+  }
+
+  method void set(int ax, int ay, int aw, int ah) {
+    let x = ax; let y = ay; let w = aw; let h = ah;
+    return;
+  }
+
+  method void moveBy(int dx, int dy) {
+    let x = x + dx;
+    let y = y + dy;
+    return;
+  }
+
+  method boolean intersects(Rect other) {
+    var boolean sep;
+    let sep = ((x + w) < other.getX()) |
+              ((other.getX() + other.getW()) < x) |
+              ((y + h) < other.getY()) |
+              ((other.getY() + other.getH()) < y);
+    return ~sep;
+  }
+
+  // Dibujo con 'clamp' para evitar error code 9 en el VM
+  method void draw(boolean color) {
+    var int x2, y2, X1, Y1, X2, Y2;
+    if ((w < 1) | (h < 1)) { return; }
+
+    let x2 = x + w - 1;
+    let y2 = y + h - 1;
+
+    if (x > 511) { return; }
+    if (y > 255) { return; }
+    if (x2 < 0) { return; }
+    if (y2 < 0) { return; }
+
+    let X1 = x;  let Y1 = y;  let X2 = x2; let Y2 = y2;
+    if (X1 < 0)   { let X1 = 0; }
+    if (Y1 < 0)   { let Y1 = 0; }
+    if (X2 > 511) { let X2 = 511; }
+    if (Y2 > 255) { let Y2 = 255; }
+    if ((X2 < X1) | (Y2 < Y1)) { return; }
+
+    do Screen.setColor(color);
+    do SafeScreen.draw(X1, Y1, X2, Y2);
+    return;
+  }
+
+  method int getX() { return x; }
+  method int getY() { return y; }
+  method int getW() { return w; }
+  method int getH() { return h; }
+}

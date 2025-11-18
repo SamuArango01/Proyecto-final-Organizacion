@@ -1,0 +1,76 @@
+function InputHandler.new 0
+    push constant 5
+    call Memory.alloc 1
+    pop pointer 0
+    push constant 0
+    pop this 0
+    push constant 0
+    pop this 1
+    push constant 0
+    pop this 2
+    push constant 0
+    pop this 3
+    push constant 0
+    pop this 4
+    push pointer 0
+    return
+function InputHandler.update 1
+    push argument 0
+    pop pointer 0
+    call Keyboard.keyPressed 0
+    pop local 0
+    push local 0
+    push constant 97
+    eq
+    pop this 0
+    push local 0
+    push constant 100
+    eq
+    pop this 1
+    push local 0
+    push constant 32
+    eq
+    pop this 2
+    push local 0
+    push constant 113
+    eq
+    pop this 3
+    push local 0
+    push constant 114
+    eq
+    pop this 4
+    push constant 0
+    return
+function InputHandler.isLeftPressed 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    return
+function InputHandler.isRightPressed 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    return
+function InputHandler.isSpacePressed 0
+    push argument 0
+    pop pointer 0
+    push this 2
+    return
+function InputHandler.isQuitPressed 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    return
+function InputHandler.isRestartPressed 0
+    push argument 0
+    pop pointer 0
+    push this 4
+    return
+function InputHandler.dispose 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return

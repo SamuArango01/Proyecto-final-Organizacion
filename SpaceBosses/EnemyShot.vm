@@ -1,0 +1,172 @@
+function EnemyShot.new 0
+    push constant 4
+    call Memory.alloc 1
+    pop pointer 0
+    push constant 0
+    pop this 3
+    push pointer 0
+    return
+function EnemyShot.spawn 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    pop this 0
+    push argument 2
+    pop this 1
+    push argument 3
+    pop this 2
+    push constant 1
+    neg
+    pop this 3
+    push constant 0
+    return
+function EnemyShot.update 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    not
+    not
+    if-goto EnemyShot_1
+    push constant 0
+    return
+    goto EnemyShot_0
+label EnemyShot_1
+label EnemyShot_0
+    push this 1
+    push this 2
+    add
+    pop this 1
+    push this 1
+    push constant 255
+    gt
+    not
+    if-goto EnemyShot_3
+    push constant 0
+    pop this 3
+    goto EnemyShot_2
+label EnemyShot_3
+label EnemyShot_2
+    push constant 0
+    return
+function EnemyShot.draw 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    not
+    not
+    if-goto EnemyShot_5
+    push constant 0
+    return
+    goto EnemyShot_4
+label EnemyShot_5
+label EnemyShot_4
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push this 0
+    push this 1
+    push this 0
+    push this 1
+    push constant 3
+    add
+    call SafeScreen.draw 4
+    pop temp 0
+    push constant 0
+    return
+function EnemyShot.hitsPlayerXYWH 4
+    push argument 0
+    pop pointer 0
+    push this 3
+    not
+    not
+    if-goto EnemyShot_7
+    push constant 0
+    return
+    goto EnemyShot_6
+label EnemyShot_7
+label EnemyShot_6
+    push this 0
+    pop local 0
+    push this 1
+    push constant 3
+    add
+    pop local 1
+    push argument 1
+    push argument 3
+    add
+    push constant 1
+    sub
+    pop local 2
+    push argument 2
+    push argument 4
+    add
+    push constant 1
+    sub
+    pop local 3
+    push local 0
+    push argument 1
+    lt
+    push this 0
+    push argument 1
+    lt
+    and
+    not
+    if-goto EnemyShot_9
+    push constant 0
+    return
+    goto EnemyShot_8
+label EnemyShot_9
+label EnemyShot_8
+    push local 2
+    push this 0
+    lt
+    push argument 1
+    push this 0
+    lt
+    and
+    not
+    if-goto EnemyShot_11
+    push constant 0
+    return
+    goto EnemyShot_10
+label EnemyShot_11
+label EnemyShot_10
+    push local 1
+    push argument 2
+    lt
+    push this 1
+    push argument 2
+    lt
+    and
+    not
+    if-goto EnemyShot_13
+    push constant 0
+    return
+    goto EnemyShot_12
+label EnemyShot_13
+label EnemyShot_12
+    push local 3
+    push this 1
+    lt
+    push argument 2
+    push this 1
+    lt
+    and
+    not
+    if-goto EnemyShot_15
+    push constant 0
+    return
+    goto EnemyShot_14
+label EnemyShot_15
+label EnemyShot_14
+    push constant 0
+    pop this 3
+    push constant 1
+    neg
+    return
+function EnemyShot.isActive 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    return

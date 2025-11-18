@@ -1,0 +1,137 @@
+class Boss {
+  field Rect r;
+  field int hp;
+  field int t;        // temporizador
+  field int pattern;  // 0 zigzag, 1 barrido
+  field boolean alive;
+  field boolean wantShot;
+  field int direction; // para el movimiento horizontal
+
+  constructor Boss new(int x, int y, int w, int h, int hearts, int p) {
+    let r = Rect.new(x, y, w, h);
+    let hp = hearts;
+    let t = 0;
+    let pattern = p;
+    let alive = true;
+    let wantShot = false;
+    let direction = 1;  // 1 = derecha, -1 = izquierda
+    return this;
+  }
+
+  method void update() {
+    var int bx, bw, nextX;
+    if (~alive) { return; }
+    let t = t + 1;
+
+    let bx = r.getX();
+    let bw = r.getW();
+
+    if (pattern = 0) {
+      // Patrón zigzag - verificar ANTES de mover
+      let nextX = bx + (2 * direction);
+      
+      // Verificar si el próximo movimiento saldría de límites
+      if (direction = 1) {
+        if ((nextX + bw) > 490) { 
+          let direction = -1;
+          do r.moveBy(0, 1);  // Solo baja
+          return;
+        }
+      } else {
+        if (nextX < 20) { 
+          let direction = 1;
+          do r.moveBy(0, 1);  // Solo baja
+          return;
+        }
+      }
+      
+      // Movimiento horizontal normal
+      do r.moveBy(2 * direction, 0);
+      
+      // Bajada gradual muy lenta
+      if ((t & 127) = 0) { 
+        do r.moveBy(0, 1); 
+      }
+    } else {
+      // Patrón barrido
+      let nextX = bx + (3 * direction);
+      
+      if (direction = 1) {
+        if ((nextX + bw) > 490) { 
+          let direction = -1;
+          do r.moveBy(0, 1);
+          return;
+        }
+      } else {
+        if (nextX < 20) { 
+          let direction = 1;
+          do r.moveBy(0, 1);
+          return;
+        }
+      }
+      
+      do r.moveBy(3 * direction, 0);
+      
+      if ((t & 63) = 0) { 
+        do r.moveBy(0, 1); 
+      }
+    }
+
+    // Disparar cada 20 frames
+    if ((t & 19) = 0) { let wantShot = true; }
+    else { let wantShot = false; }
+
+    return;
+  }
+
+  method void draw() {
+    var int bx, by, y1, y2, hpBar;
+    if (~alive) { return; }
+
+    // Dibujar cuerpo del jefe
+    do r.draw(true);
+
+    // Barra de vida con coordenadas seguras
+    let bx = r.getX();
+    let by = r.getY();
+    let y1 = by - 6;
+    let y2 = by - 4;
+    if (y1 < 0) { let y1 = 0; }
+    if (y2 < 0) { let y2 = 0; }
+    
+    // Calcular longitud de barra de vida
+    let hpBar = bx + (hp * 4);
+    if (hpBar > 511) { let hpBar = 511; }
+    
+    do Screen.setColor(true);
+    do SafeScreen.draw(bx, y1, hpBar, y2);
+
+    return;
+  }
+
+  method boolean hitBy(Bullet b) {
+    if (~alive) { return false; }
+    if (b.collides(r)) {
+      do b.deactivate();
+      let hp = hp - 1;
+      if (hp < 1) { let alive = false; }
+      return true;
+    }
+    return false;
+  }
+
+  method boolean isAlive() { return alive; }
+
+  method boolean consumeShotFlag() {
+    if (wantShot) {
+      let wantShot = false;
+      return true;
+    }
+    return false;
+  }
+
+  method int getX() { return r.getX(); }
+  method int getY() { return r.getY(); }
+  method int getW() { return r.getW(); }
+  method int getH() { return r.getH(); }
+}

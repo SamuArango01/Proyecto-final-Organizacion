@@ -1,0 +1,200 @@
+function Bullet.new 0
+    push constant 4
+    call Memory.alloc 1
+    pop pointer 0
+    push constant 0
+    pop this 3
+    push pointer 0
+    return
+function Bullet.spawn 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    pop this 0
+    push argument 2
+    pop this 1
+    push argument 3
+    neg
+    pop this 2
+    push constant 1
+    neg
+    pop this 3
+    push constant 0
+    return
+function Bullet.update 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    not
+    not
+    if-goto Bullet_1
+    push constant 0
+    return
+    goto Bullet_0
+label Bullet_1
+label Bullet_0
+    push this 1
+    push this 2
+    add
+    pop this 1
+    push this 1
+    push constant 0
+    lt
+    not
+    if-goto Bullet_3
+    push constant 0
+    pop this 3
+    goto Bullet_2
+label Bullet_3
+label Bullet_2
+    push constant 0
+    return
+function Bullet.draw 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    not
+    not
+    if-goto Bullet_5
+    push constant 0
+    return
+    goto Bullet_4
+label Bullet_5
+label Bullet_4
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push this 0
+    push this 1
+    push this 0
+    push this 1
+    push constant 3
+    add
+    call SafeScreen.draw 4
+    pop temp 0
+    push constant 0
+    return
+function Bullet.collides 8
+    push argument 0
+    pop pointer 0
+    push this 3
+    not
+    not
+    if-goto Bullet_7
+    push constant 0
+    return
+    goto Bullet_6
+label Bullet_7
+label Bullet_6
+    push argument 1
+    call Rect.getX 1
+    pop local 0
+    push argument 1
+    call Rect.getY 1
+    pop local 1
+    push argument 1
+    call Rect.getW 1
+    pop local 2
+    push argument 1
+    call Rect.getH 1
+    pop local 3
+    push this 0
+    pop local 4
+    push this 1
+    push constant 3
+    add
+    pop local 5
+    push local 0
+    push local 2
+    add
+    push constant 1
+    sub
+    pop local 6
+    push local 1
+    push local 3
+    add
+    push constant 1
+    sub
+    pop local 7
+    push local 4
+    push local 0
+    lt
+    push this 0
+    push local 0
+    lt
+    and
+    not
+    if-goto Bullet_9
+    push constant 0
+    return
+    goto Bullet_8
+label Bullet_9
+label Bullet_8
+    push local 6
+    push this 0
+    lt
+    push local 0
+    push this 0
+    lt
+    and
+    not
+    if-goto Bullet_11
+    push constant 0
+    return
+    goto Bullet_10
+label Bullet_11
+label Bullet_10
+    push local 5
+    push local 1
+    lt
+    push this 1
+    push local 1
+    lt
+    and
+    not
+    if-goto Bullet_13
+    push constant 0
+    return
+    goto Bullet_12
+label Bullet_13
+label Bullet_12
+    push local 7
+    push this 1
+    lt
+    push local 1
+    push this 1
+    lt
+    and
+    not
+    if-goto Bullet_15
+    push constant 0
+    return
+    goto Bullet_14
+label Bullet_15
+label Bullet_14
+    push constant 1
+    neg
+    return
+function Bullet.deactivate 0
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop this 3
+    push constant 0
+    return
+function Bullet.isActive 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    return
+function Bullet.getX 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    return
+function Bullet.getY 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    return

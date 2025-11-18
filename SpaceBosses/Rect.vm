@@ -1,0 +1,238 @@
+function Rect.new 0
+    push constant 4
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    pop this 0
+    push argument 1
+    pop this 1
+    push argument 2
+    pop this 2
+    push argument 3
+    pop this 3
+    push pointer 0
+    return
+function Rect.set 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    pop this 0
+    push argument 2
+    pop this 1
+    push argument 3
+    pop this 2
+    push argument 4
+    pop this 3
+    push constant 0
+    return
+function Rect.moveBy 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    push argument 1
+    add
+    pop this 0
+    push this 1
+    push argument 2
+    add
+    pop this 1
+    push constant 0
+    return
+function Rect.intersects 1
+    push argument 0
+    pop pointer 0
+    push this 0
+    push this 2
+    add
+    push argument 1
+    call Rect.getX 1
+    lt
+    push argument 1
+    call Rect.getX 1
+    push argument 1
+    call Rect.getW 1
+    add
+    push this 0
+    lt
+    or
+    push this 1
+    push this 3
+    add
+    push argument 1
+    call Rect.getY 1
+    lt
+    or
+    push argument 1
+    call Rect.getY 1
+    push argument 1
+    call Rect.getH 1
+    add
+    push this 1
+    lt
+    or
+    pop local 0
+    push local 0
+    not
+    return
+function Rect.draw 6
+    push argument 0
+    pop pointer 0
+    push this 2
+    push constant 1
+    lt
+    push this 3
+    push constant 1
+    lt
+    or
+    not
+    if-goto Rect_1
+    push constant 0
+    return
+    goto Rect_0
+label Rect_1
+label Rect_0
+    push this 0
+    push this 2
+    add
+    push constant 1
+    sub
+    pop local 0
+    push this 1
+    push this 3
+    add
+    push constant 1
+    sub
+    pop local 1
+    push this 0
+    push constant 511
+    gt
+    not
+    if-goto Rect_3
+    push constant 0
+    return
+    goto Rect_2
+label Rect_3
+label Rect_2
+    push this 1
+    push constant 255
+    gt
+    not
+    if-goto Rect_5
+    push constant 0
+    return
+    goto Rect_4
+label Rect_5
+label Rect_4
+    push local 0
+    push constant 0
+    lt
+    not
+    if-goto Rect_7
+    push constant 0
+    return
+    goto Rect_6
+label Rect_7
+label Rect_6
+    push local 1
+    push constant 0
+    lt
+    not
+    if-goto Rect_9
+    push constant 0
+    return
+    goto Rect_8
+label Rect_9
+label Rect_8
+    push this 0
+    pop local 2
+    push this 1
+    pop local 3
+    push local 0
+    pop local 4
+    push local 1
+    pop local 5
+    push local 2
+    push constant 0
+    lt
+    not
+    if-goto Rect_11
+    push constant 0
+    pop local 2
+    goto Rect_10
+label Rect_11
+label Rect_10
+    push local 3
+    push constant 0
+    lt
+    not
+    if-goto Rect_13
+    push constant 0
+    pop local 3
+    goto Rect_12
+label Rect_13
+label Rect_12
+    push local 4
+    push constant 511
+    gt
+    not
+    if-goto Rect_15
+    push constant 511
+    pop local 4
+    goto Rect_14
+label Rect_15
+label Rect_14
+    push local 5
+    push constant 255
+    gt
+    not
+    if-goto Rect_17
+    push constant 255
+    pop local 5
+    goto Rect_16
+label Rect_17
+label Rect_16
+    push local 4
+    push local 2
+    lt
+    push local 5
+    push local 3
+    lt
+    or
+    not
+    if-goto Rect_19
+    push constant 0
+    return
+    goto Rect_18
+label Rect_19
+label Rect_18
+    push argument 1
+    call Screen.setColor 1
+    pop temp 0
+    push local 2
+    push local 3
+    push local 4
+    push local 5
+    call SafeScreen.draw 4
+    pop temp 0
+    push constant 0
+    return
+function Rect.getX 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    return
+function Rect.getY 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    return
+function Rect.getW 0
+    push argument 0
+    pop pointer 0
+    push this 2
+    return
+function Rect.getH 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    return

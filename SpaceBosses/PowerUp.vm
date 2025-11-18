@@ -1,0 +1,199 @@
+function PowerUp.new 0
+    push constant 5
+    call Memory.alloc 1
+    pop pointer 0
+    push constant 0
+    pop this 4
+    push pointer 0
+    return
+function PowerUp.spawn 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    pop this 0
+    push argument 2
+    pop this 1
+    push constant 1
+    pop this 2
+    push argument 3
+    pop this 3
+    push constant 1
+    neg
+    pop this 4
+    push constant 0
+    return
+function PowerUp.update 0
+    push argument 0
+    pop pointer 0
+    push this 4
+    not
+    not
+    if-goto PowerUp_1
+    push constant 0
+    return
+    goto PowerUp_0
+label PowerUp_1
+label PowerUp_0
+    push this 1
+    push this 2
+    add
+    pop this 1
+    push this 1
+    push constant 254
+    gt
+    not
+    if-goto PowerUp_3
+    push constant 0
+    pop this 4
+    goto PowerUp_2
+label PowerUp_3
+label PowerUp_2
+    push constant 0
+    return
+function PowerUp.draw 4
+    push argument 0
+    pop pointer 0
+    push this 4
+    not
+    not
+    if-goto PowerUp_5
+    push constant 0
+    return
+    goto PowerUp_4
+label PowerUp_5
+label PowerUp_4
+    push this 0
+    push constant 1
+    sub
+    pop local 0
+    push this 1
+    push constant 1
+    sub
+    pop local 1
+    push this 0
+    push constant 1
+    add
+    pop local 2
+    push this 1
+    push constant 1
+    add
+    pop local 3
+    push local 0
+    push local 1
+    push local 2
+    push local 3
+    call SafeScreen.draw 4
+    pop temp 0
+    push constant 0
+    return
+function PowerUp.collectXYWH 6
+    push argument 0
+    pop pointer 0
+    push this 4
+    not
+    not
+    if-goto PowerUp_7
+    push constant 0
+    return
+    goto PowerUp_6
+label PowerUp_7
+label PowerUp_6
+    push this 0
+    push constant 1
+    sub
+    pop local 0
+    push this 1
+    push constant 1
+    sub
+    pop local 1
+    push this 0
+    push constant 1
+    add
+    pop local 2
+    push this 1
+    push constant 1
+    add
+    pop local 3
+    push argument 1
+    push argument 3
+    add
+    push constant 1
+    sub
+    pop local 4
+    push argument 2
+    push argument 4
+    add
+    push constant 1
+    sub
+    pop local 5
+    push local 2
+    push argument 1
+    lt
+    push local 0
+    push argument 1
+    lt
+    and
+    not
+    if-goto PowerUp_9
+    push constant 0
+    return
+    goto PowerUp_8
+label PowerUp_9
+label PowerUp_8
+    push local 4
+    push local 0
+    lt
+    push argument 1
+    push local 0
+    lt
+    and
+    not
+    if-goto PowerUp_11
+    push constant 0
+    return
+    goto PowerUp_10
+label PowerUp_11
+label PowerUp_10
+    push local 3
+    push argument 2
+    lt
+    push local 1
+    push argument 2
+    lt
+    and
+    not
+    if-goto PowerUp_13
+    push constant 0
+    return
+    goto PowerUp_12
+label PowerUp_13
+label PowerUp_12
+    push local 5
+    push local 1
+    lt
+    push argument 2
+    push local 1
+    lt
+    and
+    not
+    if-goto PowerUp_15
+    push constant 0
+    return
+    goto PowerUp_14
+label PowerUp_15
+label PowerUp_14
+    push constant 0
+    pop this 4
+    push constant 1
+    neg
+    return
+function PowerUp.getType 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    return
+function PowerUp.isActive 0
+    push argument 0
+    pop pointer 0
+    push this 4
+    return

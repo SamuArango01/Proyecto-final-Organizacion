@@ -1,0 +1,51 @@
+class Bullet {
+  field int x, y, vy;
+  field boolean active;
+
+  constructor Bullet new() { let active = false; return this; }
+
+  method void spawn(int sx, int sy, int speedUp) {
+    let x = sx; let y = sy; let vy = -speedUp; let active = true; return;
+  }
+
+  method void update() {
+    if (~active) { return; }
+    let y = y + vy;
+    if (y < 0) { let active = false; }
+    return;
+  }
+
+  method void draw() {
+    if (~active) { return; }
+    do Screen.setColor(true);
+    do SafeScreen.draw(x, y, x, y + 3);
+    return;
+  }
+
+  method boolean collides(Rect r) {
+    var int rx, ry, rw, rh, x2, y2, rx2, ry2;
+    if (~active) { return false; }
+
+    let rx = r.getX();
+    let ry = r.getY();
+    let rw = r.getW();
+    let rh = r.getH();
+
+    let x2  = x;          // ancho 1
+    let y2  = y + 3;      // alto 4
+    let rx2 = rx + rw - 1;
+    let ry2 = ry + rh - 1;
+
+    if ((x2 < rx) & (x < rx)) { return false; }
+    if ((rx2 < x) & (rx < x)) { return false; }
+    if ((y2 < ry) & (y < ry)) { return false; }
+    if ((ry2 < y) & (ry < y)) { return false; }
+
+    return true;
+  }
+
+  method void deactivate() { let active = false; return; }
+  method boolean isActive() { return active; }
+  method int getX() { return x; }
+  method int getY() { return y; }
+}
