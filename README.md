@@ -1,6 +1,5 @@
-👾 Space Invaders con Bosses
-Proyecto – Organización de Computadores (Nand2Tetris)
-Integrantes:
+👾 Space Invaders con Bosses – Proyecto Organización de Computadores (Nand2Tetris)
+Integrantes
 
 Samuel Arango
 
@@ -8,143 +7,148 @@ Samuel Moncada
 
 Sara Hurtado
 
-Este proyecto corresponde al curso Organización de Computadores y fue desarrollado completamente en Jack, el lenguaje de alto nivel del ecosistema Nand2Tetris, ejecutándose sobre la máquina virtual diseñada en el curso.
-
-Creamos una versión extendida del clásico Space Invaders, incorporando enemigos, disparos, power-ups y un Boss final, demostrando dominio de:
-
-programación orientada a objetos en Jack
-
-manejo del hardware simulado (Screen, Keyboard, Memory)
-
-uso correcto de la VM y del compilador Jack
-
-diseño modular y eficiente
-
-control de pantallas, animaciones y colisiones usando APIs del sistema
-
 ⭐ Descripción General
 
-Space Invaders con Bosses es un videojuego en donde:
+Este proyecto es una versión extendida de Space Invaders, desarrollada completamente en Jack para el curso Organización de Computadores.
+El jugador controla una nave que se desplaza horizontalmente, destruye enemigos, esquiva disparos, obtiene power-ups y se enfrenta a múltiples jefes finales.
 
-El jugador controla una nave que se mueve horizontalmente.
+El juego está compuesto por 5 niveles, y para avanzar al siguiente nivel es necesario:
 
-Dispara para eliminar enemigos ubicados en una grilla.
+Destruir todos los enemigos/obstáculos del nivel, y
 
-Los enemigos avanzan y disparan aleatoriamente.
+Derrotar al jefe final de ese nivel
 
-Existen power-ups que mejoran temporalmente las habilidades del jugador.
+Además, entre más enemigos eliminemos, mayor probabilidad hay de recibir power-ups, los cuales mejoran temporalmente las habilidades del jugador.
 
-Tras eliminar a todos los enemigos aparece un Boss final, con vida propia y ataques más complejos.
-
-Todo esto corre sobre el ambiente del VMEmulator de Nand2Tetris.
+Todo esto se ejecuta dentro del entorno Nand2Tetris, interactuando directamente con las APIs de hardware simulado (Screen, Keyboard, Sys, Memory).
 
 🧠 Relación con Organización de Computadores
 
 Este proyecto demuestra conceptos clave del curso:
 
-✔ Interacción con el Hardware Simulado
+✔ Interacción directa con el hardware simulado
 
-Uso directo de las APIs del hardware del curso:
+Uso de Screen.drawPixel, Screen.drawRectangle, Screen.drawLine
 
-Screen.drawPixel, drawLine, drawRectangle
+Lectura de teclado por Keyboard.keyPressed
 
-Keyboard.keyPressed
+Control de tiempo con Sys.wait
 
-Memory.peek y Memory.poke
+Gestión de memoria con Memory.peek y Memory.poke
 
-Implementación manual de:
+✔ Arquitectura en capas
 
-renderizado eficiente
+Lógica del juego (Game, Player, Enemy, Boss)
 
-detección de colisiones basada en memoria
+Motor de render seguro (SafeScreen)
 
-animaciones usando ciclos de CPU (Sys.wait)
+Animación del fondo (Starfield)
 
-✔ Arquitectura en Capas
+Sistema de objetos y colisiones (Rect)
 
-Se aplican los principios del curso:
+Manejo de entrada (InputHandler)
 
-Capa de aplicación: lógica del juego
-
-Capa de abstracción gráfica: SafeScreen para evitar flickering
-
-Capa de VM/Hack: ejecución en la máquina virtual
-
-Hardware simulado: interacción con pantalla y teclado
-
-✔ Control del Ciclo de Ejecución
-
-El loop principal replica un ciclo de máquina simple:
-
+✔ Ciclo de ejecución estilo CPU
 Input → Update → Collisions → Render → Wait → Repeat
-
-
-similar a un fetch–decode–execute pero aplicado a videojuegos.
 
 🧩 Arquitectura del Proyecto
 
-El código está organizado en módulos independientes que representan subsistemas del juego:
+El código está organizado modularmente en múltiples clases:
 
 Archivo	Función
 Main.jack	Punto de entrada del programa
-Game.jack	Loop principal, actualización y render
-Player.jack	Lógica del jugador
-Bullet.jack	Disparos del jugador
+Game.jack	Game loop, niveles, actualización y render
+Player.jack	Movimiento y disparos del jugador
+Bullet.jack	Balas del jugador
 Enemy.jack	Lógica de enemigos individuales
-EnemyGrid.jack	Organización y movimiento grupal
+EnemyGrid.jack	Organización y movimiento grupal de enemigos
 EnemyShot.jack	Disparos enemigos
-Boss.jack	Jefe final con vida y patrón de ataque
-PowerUp.jack	Sistema de power-ups
+Boss.jack	Jefe final de cada nivel, con vida y patrones
+PowerUp.jack	Sistema de power-ups según enemigos destruidos
 InputHandler.jack	Lectura estructurada del teclado
-Starfield.jack	Fondo animado
-SafeScreen.jack	Dibujo libre de flickering
-Rect.jack	Representación geométrica y colisiones
-🔧 Mecánicas del Juego
-✔ Movimiento del jugador
+Starfield.jack	Animación del fondo
+SafeScreen.jack	Render sin parpadeos (anti-flicker)
+Rect.jack	Geometría y colisiones
+🎮 Jugabilidad
 
-Basado en lectura directa del teclado a través de la API del hardware.
+← → : Mover la nave
 
-✔ Disparos
+Espacio : Disparar
 
-Objetos Bullet y EnemyShot que se actualizan en arreglos dinámicos.
+Objetivo por nivel:
+
+Destruir todos los enemigos
+
+Derrotar al Boss
+
+Power-Ups:
+
+Se obtienen al eliminar enemigos
+
+Mejoran velocidad, disparos y habilidades
+
+Avance de niveles:
+
+El juego tiene 5 niveles progresivos
+
+Cada nivel incrementa:
+
+dificultad de enemigos
+
+velocidad
+
+frecuencia de disparos
+
+comportamiento del jefe
+
+🚀 Mecánicas Avanzadas
+✔ Sistema de 5 niveles
+
+Cada nivel tiene su propio conjunto de enemigos, velocidades y boss.
+
+El jugador solo avanza si supera completamente el nivel anterior.
 
 ✔ Enemigos en Grilla
 
-Movimiento sincronizado inspirado en el original Space Invaders:
+Movimiento sincronizado, inspirado en Space Invaders clásico
 
-se mueven horizontalmente
+Descenso al llegar a bordes
 
-bajan cuando tocan un borde
+Comportamiento más rápido en niveles altos
 
-velocidad aumenta cuando hay menos enemigos
+✔ Boss Final por Nivel
 
-✔ Boss Final
+Vida propia
 
-Con:
+Disparos especiales
 
-vida
+Patrones únicos de movimiento
 
-disparos más complejos
+✔ Power-Ups Dinámicos
 
-patrón de movimiento independiente del grid
+Se otorgan según la cantidad de enemigos destruidos:
 
-✔ Power-Ups
+Velocidad aumentada
 
-Implementados como objetos que se actualizan y detectan contacto con el jugador.
+Disparo doble
 
-✔ Starfield
+Menor cooldown
 
-Fondo dinámico para simular profundidad usando varios niveles de movimiento.
+Disparo más rápido o más ancho
 
-✔ SafeScreen
+✔ Starfield Animado
 
-Evita el parpadeo típico de Screen.draw en Jack optimizando:
+Un fondo de estrellas en movimiento que da profundidad visual.
 
-borrados parciales
+✔ SafeScreen Anti-Flicker
 
-orden de render
+Evita parpadeos típicos de la API de Screen en Jack, mejorando la experiencia visual:
 
-doble-buffer visual simple
+Dibujo ordenado
+
+Limpieza controlada
+
+Actualización eficiente
 
 📂 Estructura del Proyecto
 ├── Main.jack
@@ -163,16 +167,28 @@ doble-buffer visual simple
 
 ▶️ Cómo Ejecutarlo
 
-Abre JackCompiler y compila la carpeta del proyecto.
+Abrir JackCompiler y compilar la carpeta del proyecto.
 
-Abre VMEmulator.
+Abrir VMEmulator.
 
-Carga la carpeta compilada.
+Cargar la carpeta compilada.
 
-Configura:
+Configurar:
 
 Screen: FAST
 
-Animation speed: Max
+Animator: Max speed
 
-Ejecuta con Run.
+Ejecutar con Run.
+
+🏆 Créditos
+
+Desarrollado por:
+
+Samuel Arango
+
+Samuel Moncada
+
+Sara Hurtado
+
+Para el curso Organización de Computadores – Nand2Tetris.
