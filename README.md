@@ -1,6 +1,4 @@
 
-
-````markdown
 # Space Invaders con Bosses – Proyecto Organización de Computadores (Nand2Tetris)
 
 ## Integrantes
